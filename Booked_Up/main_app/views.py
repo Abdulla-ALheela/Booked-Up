@@ -8,5 +8,5 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
-def cat_index(request):
+def book_index(request):
     return render(request, 'books/index.html', {'books': books})
