@@ -1,5 +1,7 @@
 {% load static %}
 {% load crispy_forms_tags %}
+{% load django_bootstrap5 %}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,12 +17,39 @@
   </head>
   <body>
     <header>
-      <nav>
-        <ul>
-            <li><a href="{% url 'book-index' %}">All Books</a></li>
-            <li><a href="{% url 'about' %}">About</a></li>
-        </ul>
-      </nav>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-2">
+        <a class="navbar-brand" href="#">
+            <img src="https://www.svgrepo.com/show/303109/adobe-xd-logo.svg" alt="Logo" height="40">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse p-2" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'book-index' %}">All Books</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'book-create' %}">Add a Book</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'about' %}">About</a>
+            </li>
+              {% endif %}  
+            </ul>
+        </div>
+    </nav>
     </header>
     <main>
      {% block content %} 
