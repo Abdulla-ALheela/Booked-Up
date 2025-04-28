@@ -7,14 +7,14 @@
 <section id="about" class="py-5 bg-light">
   <div class="container px-4 px-lg-5">
       <div class="row gx-4 gx-lg-5 align-items-center">
+        <div class="col-lg-6 pt-4">
+          <img src={{book.image}} alt="Book image" class="img-fluid rounded">
+      </div>
           <div class="col-lg-6">
               <h1 class="fw-bolder mb-4">{{book.title}}</h1>
               <h2 class="fw-bolder mb-4">{{book.author}}</h2>
               <p class="lead mb-4">{{book.description}}</p>
-              <a class="btn btn-primary btn-lg px-4 me-sm-3" href="#features">Borrow</a>
-          </div>
-          <div class="col-lg-6 pt-4">
-              <img src={{book.image}} alt="Book image" class="img-fluid rounded">
+              <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'add_to_cart' book.id %}">Borrow</a>
           </div>
       </div>
   </div>
