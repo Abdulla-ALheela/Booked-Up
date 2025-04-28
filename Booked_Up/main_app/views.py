@@ -9,15 +9,13 @@ from django.views.generic.edit import CreateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 
-@login_required
 def home(request):
     return render(request, 'home.html')
 
-@login_required
 def about(request):
     return render(request, 'about.html')
 
-@login_required
+
 def book_index(request):
     books = Book.objects.all()
     return render(request, 'books/index.html', {'books': books})
@@ -27,22 +25,22 @@ def book_detail(request, book_id):
     book = Book.objects.get(id=book_id)
     return render(request, 'books/detail.html', {'book': book})
 
-class BookCreate(CreateView):
+class BookCreate(LoginRequiredMixin,CreateView):
     model = Book
     fields = '__all__'
 
-class BookUpdate(UpdateView):
+class BookUpdate(LoginRequiredMixin,UpdateView):
     model = Book
     fields = '__all__'
 
-class BookDelete(DeleteView):
+class BookDelete(LoginRequiredMixin,DeleteView):
     model = Book
     success_url = '/Books/'
 
-class Home(LoginRequiredMixin,LoginView):
+class Home(LoginView):
     template_name = 'home.html'
 
-@login_required
+
 def signup(request):
     error_message = ''
     if request.method == 'POST':

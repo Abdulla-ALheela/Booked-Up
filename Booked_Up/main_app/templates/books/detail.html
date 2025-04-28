@@ -4,9 +4,19 @@
 <link rel="stylesheet" href="{% static 'css/books/book-detail.css' %}" />
 {% endblock %} 
 {% block content %}
-<section class="book-container">
-  <div class="book-details">
-    <h1>{{ book.title }}</h1>
+<div class="container">
+  <div class="row">
+      <div class="col-md-6 text-center">
+          <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw4fHxjb21wYW55fGVufDB8MHx8fDE3MTE2MTg5OTZ8MA&ixlib=rb-4.0.3&q=80&w=1080" class="img-fluid" style="box-shadow: 0 0 15px #eee;" alt="">
+      </div>
+      <div class="col-md-6 pt-3">
+          <small class="text-uppercase" style="color: #9B5DE5;">About us</small>
+          <h1 class="h2 mb-4" style="font-weight: 600;">About Our
+              <span style="color: #9B5DE5;" class="font-weight-bold">Company</span></h1>
+          <p class="text-secondary" style="line-height: 2;">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Suscipit repellat iure laboriosam cum voluptatum, nam minima deserunt aut? Distinctio voluptatibus dolor
+              quaerat quo omnis illo sequi at velit, odit quod!</p>
+      </div>
   </div>
-</section>
+</div>
 {% endblock %}
