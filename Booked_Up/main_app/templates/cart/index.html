@@ -7,13 +7,13 @@
 <div class="container px-4 py-5 mx-auto">
     <div class="row d-flex justify-content-center">
         <div class="col-5">
-            <h4 class="heading">Shopping Bag</h4>
+            <h4 class="heading">Shopping Cart</h4>
         </div>
         <div class="col-7">
             <div class="row text-right">
 
                 <div class="col-4">
-                    <h6 class="mt-2">Price</h6>
+                    <h6 class="mt-2">Added Date</h6>
                 </div>
             </div>
         </div>
@@ -36,7 +36,7 @@
         <div class="my-auto col-7">
             <div class="row text-right">
                 <div class="col-4">
-                    <h6 class="mob-text">$9.99</h6>
+                    <h6 class="mob-text">{{objct.book.created_at}}</h6>
                 </div>
                 <div class="col-4">
                  <a href="{% url 'remove_from_cart' objct.book.id %}" class="btn btn-danger">Remove from Cart</a>

@@ -8,6 +8,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.shortcuts import get_object_or_404
+from datetime import timedelta
+from django.utils import timezone
 
 
 def home(request):
@@ -19,7 +21,8 @@ def about(request):
 
 def book_index(request):
     books = Book.objects.all()
-    return render(request, 'books/index.html', {'books': books})
+    borrowed_list = BorrowList.objects.all()
+    return render(request, 'books/index.html', {'books': books , 'borrowed_list': borrowed_list})
 
 @login_required
 def book_detail(request, book_id):
@@ -50,11 +53,27 @@ def remove_from_cart(request, book_id):
 
 @login_required
 def checkout(request):
+    cart_items = BorrowCart.objects.filter(user=request.user, is_active=True)
 
-    cart = request.session.get('cart', [])
+    for item in cart_items:
+        if not BorrowList.objects.filter(user=request.user, book=item.book).exists():
+            BorrowList.objects.create(
+                user=request.user,
+                book=item.book,
+                borrow_at=timezone.now().date(),
+                due_date=timezone.now().date() + timedelta(days=14),
+                is_borrowed=True
+            )
+
+            
+            item.book.is_available = False
+            item.book.save()
 
     
+    cart_items.delete()
+
     return redirect('book-index')
+
 
 class BookCreate(LoginRequiredMixin,CreateView):
     model = Book
