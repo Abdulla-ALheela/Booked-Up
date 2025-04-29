@@ -28,34 +28,33 @@ def book_detail(request, book_id):
 
 @login_required
 def cart_index(request):
-    cart = request.session.get('cart', [])
-    books = Book.objects.filter(id__in=cart)
+    books = BorrowCart.objects.filter(user=request.user, is_active=True)
+    print(books)
     return render(request, 'cart/index.html', {'books': books})
 
 @login_required
 def add_to_cart(request, book_id):
     book = get_object_or_404(Book, id=book_id)
 
-    cart = request.session.get('cart', [])
+    BorrowCart.objects.get_or_create(book=book, user=request.user, is_active=True)
 
-    if book.id not in cart:
-        cart.append(book.id)
+    return redirect('book-index')
 
-    request.session['cart'] = cart 
-    return render(request, 'books/detail.html', {'book': book})
-
-
+@login_required
 def remove_from_cart(request, book_id):
     book = get_object_or_404(Book, id=book_id)
 
+    BorrowCart.objects.filter(book=book, user=request.user, is_active=True).delete()
+
+    return redirect('cart-index')
+
+@login_required
+def checkout(request):
+
     cart = request.session.get('cart', [])
 
-    if book_id in cart:
-        cart.remove(book_id)
-
-    request.session['cart'] = cart  
-    return render(request, 'cart/index.html', {'book': book})
-
+    
+    return redirect('book-index')
 
 class BookCreate(LoginRequiredMixin,CreateView):
     model = Book
@@ -86,4 +85,5 @@ def signup(request):
     form = UserCreationForm()
     context = {'form': form, 'error_message': error_message}
     return render(request, 'signup.html', context)
-  
+    
+   
