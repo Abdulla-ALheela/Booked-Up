@@ -34,8 +34,8 @@ class BorrowList(models.Model):
     
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    borrow_at = models.DateField(auto_now_add=True)
-    due_date = models.DateField(auto_now_add=True)
+    borrow_at = models.DateField()
+    due_date = models.DateField()
     is_borrowed = models.BooleanField(default=False)
 
     def __str__(self):

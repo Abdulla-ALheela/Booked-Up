@@ -9,5 +9,30 @@
       <button type="submit" class="btn submit">Login</button>
     </form>
   </section>
+{%else%}
+<br/>
+<h1 class="text-center mb-5">Your Borrowed Book</h1>
+<div class="container py-5">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for book in books %}
+    <div class="col">
+      <a href="{% url 'book-detail' book.book.id %}" >
+        <div class="card h-100">
+          <img src={{book.book.image}} class="card-img-top" alt="book image">
+          <div class="card-body">
+           <h5 class="card-title">{{book.book.title}}</h5>
+           <p class="card-text">{{book.book.aouth}}</p>
+           <p class="card-text">{{book.borrow_at}}</p>
+           <p class="card-text">{{book.due_date}}</p>
+           <br/>
+           <br/> 
+           <a href="{% url 'Return' book.book.id %}" >Return</a>
+         </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
 {% endif %}
 {% endblock %}

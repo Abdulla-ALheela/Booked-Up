@@ -13,7 +13,8 @@ from django.utils import timezone
 
 
 def home(request):
-    return render(request, 'home.html')
+    books = BorrowList.objects.all()
+    return render(request, 'home.html',{'books': books})
 
 def about(request):
     return render(request, 'about.html')
@@ -32,7 +33,6 @@ def book_detail(request, book_id):
 @login_required
 def cart_index(request):
     books = BorrowCart.objects.filter(user=request.user, is_active=True)
-    print(books)
     return render(request, 'cart/index.html', {'books': books})
 
 @login_required
@@ -57,7 +57,7 @@ def checkout(request):
 
     for item in cart_items:
         if not BorrowList.objects.filter(user=request.user, book=item.book).exists():
-            BorrowList.objects.create(
+            BorrowList.objects.get_or_create(
                 user=request.user,
                 book=item.book,
                 borrow_at=timezone.now().date(),
@@ -73,6 +73,19 @@ def checkout(request):
     cart_items.delete()
 
     return redirect('book-index')
+
+
+@login_required
+def Return(request,book_id):
+
+    book = get_object_or_404(Book, id=book_id)
+  
+    BorrowList.objects.filter(book=book, user=request.user).delete()
+
+    book.is_available = True
+    book.save()
+
+    return redirect('home')
 
 
 class BookCreate(LoginRequiredMixin,CreateView):
