@@ -10,6 +10,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.shortcuts import get_object_or_404
 from datetime import timedelta
 from django.utils import timezone
+from django.urls import reverse
 
 
 def home(request):
@@ -123,19 +124,53 @@ def comments_index(request):
     return render(request, 'comments/index.html', {'comments': comments})
 
 @login_required
-def comment_detail(request, comment_id):
+def comment_detail(request, comment_id,book_id):
     comment = Comments.objects.get(id=comment_id)
-    return render(request, 'comments/detail.html', {'comment': comment})
+    book = Book.objects.get(id=book_id)
+    return render(request, 'comments/detail.html', {'comment': comment , 'book':book})
 
 
 class CommentsCreate(LoginRequiredMixin,CreateView):
     model = Comments
     fields = '__all__'
 
+    def form_valid(self, form):
+        book_id = self.kwargs['book_id']
+        form.instance.Book = get_object_or_404(Book, id=book_id)
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse('comment-detail', kwargs={
+            'book_id': self.kwargs['book_id'],
+            'comment_id': self.object.id
+         })
+
 class CommentsUpdate(LoginRequiredMixin,UpdateView):
     model = Comments
     fields = '__all__'
 
+    def form_valid(self, form):
+        book_id = self.kwargs['book_id']
+        form.instance.Book = get_object_or_404(Book, id=book_id)
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse('comment-detail', kwargs={
+            'book_id': self.kwargs['book_id'],
+            'comment_id': self.object.id
+         })
+    
+
 class CommentsDelete(LoginRequiredMixin,DeleteView):
     model = Comments
-    success_url = 'books/<int:book_id>/'
+
+    def get_success_url(self):
+        book_id = self.object.book.id
+        return reverse('book-detail', kwargs={'book_id': book_id})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        comment = self.get_object()
+        context['book'] = comment.book
+        context['comment'] = comment
+        return context
