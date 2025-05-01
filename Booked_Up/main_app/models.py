@@ -43,3 +43,16 @@ class BorrowList(models.Model):
 
     def get_absolute_url(self):
         return reverse('cart-detail', kwargs={'cart_id': self.id})
+
+class Comments(models.Model):
+    
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment = models.CharField(max_length=200)
+    date = models.DateField()
+
+    def __str__(self):
+        return f"{self.user} commented {self.comment }"
+
+    def get_absolute_url(self):
+        return reverse('comment-detail', kwargs={'comment_id': self.id})

@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Book,BorrowCart,BorrowList
+from .models import Book,BorrowCart,BorrowList , Comments
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
@@ -118,4 +118,24 @@ def signup(request):
     context = {'form': form, 'error_message': error_message}
     return render(request, 'signup.html', context)
     
-   
+def comments_index(request):
+    comments = Comments.objects.all()
+    return render(request, 'comments/index.html', {'comments': comments})
+
+@login_required
+def comment_detail(request, comment_id):
+    comment = Comments.objects.get(id=comment_id)
+    return render(request, 'comments/detail.html', {'comment': comment})
+
+
+class CommentsCreate(LoginRequiredMixin,CreateView):
+    model = Comments
+    fields = '__all__'
+
+class CommentsUpdate(LoginRequiredMixin,UpdateView):
+    model = Comments
+    fields = '__all__'
+
+class CommentsDelete(LoginRequiredMixin,DeleteView):
+    model = Comments
+    success_url = 'books/<int:book_id>/'

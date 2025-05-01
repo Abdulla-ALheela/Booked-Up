@@ -18,4 +18,9 @@ urlpatterns = [
    path('books/<int:pk>/update/', views.BookUpdate.as_view(), name='book-update'),
    path('books/<int:pk>/delete/', views.BookDelete.as_view(), name='book-delete'),
    path('accounts/signup/', views.signup, name='signup'),
+   path('comments/', views.comments_index, name='comment-index'),
+   path('comments/<int:comment_id>/', views.comment_detail, name='comment-detail'),
+   path('comments/create/', views.CommentsCreate.as_view(), name='comment-create'),
+   path('comments/<int:pk>/update/', views.CommentsUpdate.as_view(), name='comment-update'),
+   path('comments/<int:pk>/delete/', views.CommentsDelete.as_view(), name='comment-delete'),
 ]
