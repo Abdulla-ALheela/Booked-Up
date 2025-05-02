@@ -118,16 +118,16 @@ def signup(request):
     form = UserCreationForm()
     context = {'form': form, 'error_message': error_message}
     return render(request, 'signup.html', context)
-    
+
+@login_required
 def comments_index(request):
-    comments = Comments.objects.all()
+    comments = Comments.objects.all(user=request.user)
     return render(request, 'comments/index.html', {'comments': comments})
 
 @login_required
-def comment_detail(request, comment_id,book_id):
-    comment = Comments.objects.get(id=comment_id)
-    book = Book.objects.get(id=book_id)
-    return render(request, 'comments/detail.html', {'comment': comment , 'book':book})
+def comment_detail(request, comment_id):
+    comment = Comments.objects.get(id=comment_id, user=request.user)
+    return render(request, 'comments/detail.html', {'comment': comment})
 
 
 class CommentsCreate(LoginRequiredMixin,CreateView):
@@ -137,10 +137,11 @@ class CommentsCreate(LoginRequiredMixin,CreateView):
     def form_valid(self, form):
         book_id = self.kwargs['book_id']
         form.instance.Book = get_object_or_404(Book, id=book_id)
+        form.instance.user = self.request.user 
         return super().form_valid(form)
     
     def get_success_url(self):
-        return reverse('comment-detail', kwargs={
+        return reverse('book-detail', kwargs={
             'book_id': self.kwargs['book_id'],
             'comment_id': self.object.id
          })
@@ -155,7 +156,7 @@ class CommentsUpdate(LoginRequiredMixin,UpdateView):
         return super().form_valid(form)
     
     def get_success_url(self):
-        return reverse('comment-detail', kwargs={
+        return reverse('book-detail', kwargs={
             'book_id': self.kwargs['book_id'],
             'comment_id': self.object.id
          })
