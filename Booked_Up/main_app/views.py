@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from .models import Book,BorrowCart,BorrowList , Comments
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
@@ -15,8 +15,18 @@ from django import forms
 
 
 def home(request):
-    books = BorrowList.objects.all()
-    return render(request, 'home.html',{'books': books})
+    if request.user.is_authenticated:
+        books = BorrowList.objects.filter(user=request.user)
+        return render(request, 'home.html', {'books': books})
+    else:
+        form = AuthenticationForm()
+        if request.method == 'POST':
+            form = AuthenticationForm(data=request.POST)
+            if form.is_valid():
+                login(request, form.get_user())
+                return redirect('home')
+        return render(request, 'home.html', {'form': form})
+
 
 def about(request):
     return render(request, 'about.html')
@@ -30,11 +40,14 @@ def book_index(request):
 @login_required
 def book_detail(request, book_id):
     book = Book.objects.get(id=book_id)
-    return render(request, 'books/detail.html', {'book': book})
+    comments = Comments.objects.filter(book=book) 
+    borrow = BorrowList.objects.filter(book=book).first()
+    return render(request, 'books/detail.html', {'book': book, 'comments': comments, 'borrow': borrow})
 
 @login_required
 def cart_index(request):
     books = BorrowCart.objects.filter(user=request.user, is_active=True)
+    cart_count = BorrowCart.objects.filter(user=request.user, is_active=True).count()
     return render(request, 'cart/index.html', {'books': books})
 
 @login_required
@@ -88,22 +101,6 @@ def Return(request,book_id):
     book.save()
 
     return redirect('home')
-
-
-class BookCreate(LoginRequiredMixin,CreateView):
-    model = Book
-    fields = '__all__'
-
-class BookUpdate(LoginRequiredMixin,UpdateView):
-    model = Book
-    fields = '__all__'
-
-class BookDelete(LoginRequiredMixin,DeleteView):
-    model = Book
-    success_url = '/Books/'
-
-class Home(LoginView):
-    template_name = 'home.html'
 
 
 def signup(request):

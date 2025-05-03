@@ -29,3 +29,12 @@
 .btn-outline-light {
     border-radius: 0 20px 20px 0;
 }
+
+.nav-item{
+    margin-top: 5px;
+}
+
+.non-link {
+    text-decoration: none;
+    color: inherit;
+  }

@@ -1,0 +1,46 @@
+.card-img-top {
+  width: 100%;
+  height: 300px; 
+  object-fit: contain;
+  margin-top: 20px;
+}
+
+.image-container {
+  position: relative;
+}
+
+img {
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+img.borrowed {
+  filter: blur(5px); 
+  opacity: 0.7; 
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  visibility: hidden; 
+  opacity: 0; 
+  transition: opacity 0.3s ease;
+}
+
+
+.image-container img.borrowed + .overlay {
+  visibility: visible;
+  opacity: 1; 
+}
+
+.borrowed-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+}

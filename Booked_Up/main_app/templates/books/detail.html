@@ -1,23 +1,63 @@
-{% extends 'base.html' %} 
-{% load static %} 
+{% extends 'base.html' %}
+{% load static %}
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/books/book-detail.css' %}" />
-{% endblock %} 
+{% endblock %}
 {% block content %}
 <section id="about" class="py-5 bg-light">
   <div class="container px-4 px-lg-5">
-      <div class="row gx-4 gx-lg-5 align-items-center">
-        <div class="col-lg-6 pt-4">
-          <img src={{book.image}} alt="Book image" class="img-fluid rounded">
+    <div class="row gx-4 gx-lg-5 align-items-center">
+      <div class="col-lg-6 pt-4">
+        <img src={{book.image}} alt="Book image" class="img-fluid rounded">
       </div>
-          <div class="col-lg-6">
-              <h1 class="fw-bolder mb-4">{{book.title}}</h1>
-              <h2 class="fw-bolder mb-4">{{book.author}}</h2>
-              <p class="lead mb-4">{{book.description}}</p>
-              <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'add_to_cart' book.id %}">Borrow</a>
-              <a href="{% url 'comment-create' book.id %}" class="btn btn-secondary">Add a Comment</a>
-          </div>
+      <div class="col-lg-6">
+        <h1 class="fw-bolder mb-4">{{book.title}}</h1>
+        <h2 class="fw-bolder mb-4">{{book.author}}</h2>
+        <p class="lead mb-4">{{book.description}}</p>
+        {% if book.is_available %}
+        <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'add_to_cart' book.id %}">Borrow</a>
+        {% elif borrow.user == user %}
+        <div class="alert alert-success" role="alert">
+          You have already borrowed this book.
+        </div>
+        {% else %}
+        <div class="alert alert-warning" role="alert">
+          This book is currently borrowed by another user.<br>
+          Expected to be available after: <strong>{{ borrow.due_date }}</strong>
+        </div>
+        {% endif %}
+        <a href="{% url 'comment-create' book.id %}" class="btn btn-secondary">Add a Comment</a>
       </div>
+    </div>
   </div>
 </section>
+<br/>
+<h1 class="text-center mb-5">Comment Section</h1>
+<div class="container py-5">
+  {% if comments %}
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for comment in comments %}
+    <div class="col">
+      {% if comment.user == user %}
+      <a href="{% url 'comment-detail' comment.id %}">
+        {% endif %}
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Comment: {{ comment.comment }}</h5>
+            <p class="card-text">Book: {{ comment.book.title }}</p>
+            <p class="card-text">Username: {{ comment.user.username }}</p>
+          </div>
+        </div>
+        {% if comment.user == user %}
+      </a>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div>
+    No comments available.
+  </div>
+  {% endif %}
+</div>
 {% endblock %}

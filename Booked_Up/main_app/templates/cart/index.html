@@ -1,8 +1,8 @@
-{% extends 'base.html' %} 
-{% load static %} 
+{% extends 'base.html' %}
+{% load static %}
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/books/cart-index.css' %}" />
-{% endblock %} 
+{% endblock %}
 {% block content %}
 <div class="container px-4 py-5 mx-auto">
     <div class="row d-flex justify-content-center">
@@ -19,10 +19,10 @@
         </div>
     </div>
     {% for objct in books %}
-    
+
     <div class="row d-flex justify-content-center border-top">
         <div class="col-5">
-            <br/>
+            <br />
             <div class="row d-flex">
                 <div class="book">
                     <img src={{objct.book.image}} class="{{objct.book.title}} image">
@@ -39,13 +39,17 @@
                     <h6 class="mob-text">{{objct.book.created_at}}</h6>
                 </div>
                 <div class="col-4">
-                 <a href="{% url 'remove_from_cart' objct.book.id %}" class="btn btn-danger">Remove from Cart</a>
+                    <a href="{% url 'remove_from_cart' objct.book.id %}" class="btn btn-danger">Remove from Cart</a>
                 </div>
             </div>
         </div>
     </div>
     {% endfor %}
-    <a href="{% url 'checkout'%}" class="btn btn-primary" >Checkout</a>
+
+    {% if books %}
+    <a href="{% url 'checkout' %}" class="btn btn-primary">Checkout</a>
+    {% endif %}
+
 </div>
 
 {% endblock %}
