@@ -15,6 +15,7 @@
               <h2 class="fw-bolder mb-4">{{book.author}}</h2>
               <p class="lead mb-4">{{book.description}}</p>
               <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'add_to_cart' book.id %}">Borrow</a>
+              <a href="{% url 'comment-create' book.id %}" class="btn btn-secondary">Add a Comment</a>
           </div>
       </div>
   </div>

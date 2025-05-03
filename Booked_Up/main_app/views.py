@@ -11,6 +11,7 @@ from django.shortcuts import get_object_or_404
 from datetime import timedelta
 from django.utils import timezone
 from django.urls import reverse
+from django import forms
 
 
 def home(request):
@@ -132,34 +133,56 @@ def comment_detail(request, comment_id):
 
 class CommentsCreate(LoginRequiredMixin,CreateView):
     model = Comments
-    fields = '__all__'
+    fields = ['comment','date']
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+    
+        form.fields['date'].widget = forms.DateInput(
+            attrs={
+                'type': 'date',  
+                'class': 'form-control',  
+                'placeholder': 'Select a date'
+            }
+        )
+        return form
 
     def form_valid(self, form):
         book_id = self.kwargs['book_id']
-        form.instance.Book = get_object_or_404(Book, id=book_id)
+        form.instance.book = get_object_or_404(Book, id=book_id)
         form.instance.user = self.request.user 
         return super().form_valid(form)
     
     def get_success_url(self):
         return reverse('book-detail', kwargs={
             'book_id': self.kwargs['book_id'],
-            'comment_id': self.object.id
          })
 
 class CommentsUpdate(LoginRequiredMixin,UpdateView):
     model = Comments
-    fields = '__all__'
+    fields = ['comment','date']
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+    
+        form.fields['date'].widget = forms.DateInput(
+            attrs={
+                'type': 'date',  
+                'class': 'form-control',  
+                'placeholder': 'Select a date'
+            }
+        )
+        return form
 
     def form_valid(self, form):
         book_id = self.kwargs['book_id']
-        form.instance.Book = get_object_or_404(Book, id=book_id)
+        form.instance.book = get_object_or_404(Book, id=book_id)
         form.instance.user = self.request.user 
         return super().form_valid(form)
     
     def get_success_url(self):
         return reverse('book-detail', kwargs={
             'book_id': self.kwargs['book_id'],
-            'comment_id': self.object.id
          })
     
 
