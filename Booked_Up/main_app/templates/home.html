@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}" />
 {% endblock %}
@@ -8,7 +9,7 @@
 <section>
   <form action="{% url 'home' %}" method="post" class="login">
     <h1>Login</h1>
-    {% csrf_token %} {{ form.as_p }}
+    {% csrf_token %}  {{ form|crispy }}
     <input type="hidden" name="next" value="{{ next }}" />
     <button type="submit" class="btn submit">Login</button>
   </form>
@@ -24,12 +25,12 @@
         <div class="card h-100">
           <img src={{book.book.image}} class="card-img-top" alt="book image">
           <div class="card-body">
-            <h5 class="card-title">{{book.book.title}}</h5>
-            <p class="card-text">{{book.book.aouth}}</p>
-            <p class="card-text">Borrowed on: {{book.borrow_at}}</p>
-            <p class="card-text">Return by: {{book.due_date}}</p>
+            <h5 class="card-title non-link">{{book.book.title}}</h5>
+            <p class="card-text  non-link">{{book.book.aouth}}</p>
+            <p class="card-text  non-link">Borrowed on: {{book.borrow_at}}</p>
+            <p class="card-text  non-link">Return by: {{book.due_date}}</p>
             </br>
-            <a class="btn btn-danger" href="{% url 'Return' book.book.id %}">Return</a>
+            <a class="btn btn-danger btn-color" href="{% url 'Return' book.book.id %}">Return</a>
           </div>
         </div>
       </a>

@@ -4,5 +4,15 @@
     object-fit: contain;
     margin-top: 20px;
   }
+  .btn.btn-danger.btn-color {
+    color: white;
+  }
+  .card a,
+.card a:link,
+.card a:visited,
+.card a:hover,
+.card a:active {
+  text-decoration: none;
+  color: inherit;
+}
 
-  

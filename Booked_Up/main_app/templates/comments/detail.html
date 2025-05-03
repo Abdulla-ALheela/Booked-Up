@@ -9,9 +9,13 @@
         <div class="row gx-4 gx-lg-5 align-items-center">
             <div class="col-lg-6">
                 <h1 class="fw-bolder mb-4">Comment: {{comment.comment}}</h1>
-                <h2 class="fw-bolder mb-4">Book: {{comment.book.title}}</h2>
+                <h3 class="fw-bolder mb-4">Book: {{comment.book.title}}</h3>
+                <h3 class="fw-bolder mb-4">date created: {{comment.date}}</h3>
             </div>
             <a href="{% url 'comment-update' comment.book.id comment.id %}" class="btn btn-warning">Edit</a>
+            <br/>
+            <br/>
+            <br/>
             <a href="{% url 'comment-delete' comment.book.id comment.id %}" class="btn btn-danger">Delete</a>
         </div>
     </div>

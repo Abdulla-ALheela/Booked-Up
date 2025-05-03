@@ -12,7 +12,9 @@ from datetime import timedelta
 from django.utils import timezone
 from django.urls import reverse
 from django import forms
-
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit, Row, Column
+from .forms import CommentsForm
 
 def home(request):
     if request.user.is_authenticated:
@@ -42,12 +44,12 @@ def book_detail(request, book_id):
     book = Book.objects.get(id=book_id)
     comments = Comments.objects.filter(book=book) 
     borrow = BorrowList.objects.filter(book=book).first()
-    return render(request, 'books/detail.html', {'book': book, 'comments': comments, 'borrow': borrow})
+    comments_form = CommentsForm()
+    return render(request, 'books/detail.html', {'book': book, 'comments': comments, 'borrow': borrow, 'comments_form': comments_form})
 
 @login_required
 def cart_index(request):
     books = BorrowCart.objects.filter(user=request.user, is_active=True)
-    cart_count = BorrowCart.objects.filter(user=request.user, is_active=True).count()
     return render(request, 'cart/index.html', {'books': books})
 
 @login_required
@@ -130,19 +132,7 @@ def comment_detail(request, comment_id):
 
 class CommentsCreate(LoginRequiredMixin,CreateView):
     model = Comments
-    fields = ['comment','date']
-
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-    
-        form.fields['date'].widget = forms.DateInput(
-            attrs={
-                'type': 'date',  
-                'class': 'form-control',  
-                'placeholder': 'Select a date'
-            }
-        )
-        return form
+    fields = ['comment']
 
     def form_valid(self, form):
         book_id = self.kwargs['book_id']
@@ -157,19 +147,7 @@ class CommentsCreate(LoginRequiredMixin,CreateView):
 
 class CommentsUpdate(LoginRequiredMixin,UpdateView):
     model = Comments
-    fields = ['comment','date']
-
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-    
-        form.fields['date'].widget = forms.DateInput(
-            attrs={
-                'type': 'date',  
-                'class': 'form-control',  
-                'placeholder': 'Select a date'
-            }
-        )
-        return form
+    fields = ['comment']
 
     def form_valid(self, form):
         book_id = self.kwargs['book_id']

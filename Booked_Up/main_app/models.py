@@ -49,7 +49,7 @@ class Comments(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.CharField(max_length=200)
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.user} commented {self.comment }"
