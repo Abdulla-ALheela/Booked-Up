@@ -121,7 +121,7 @@ def signup(request):
 
 @login_required
 def comments_index(request):
-    comments = Comments.objects.all(user=request.user)
+    comments = Comments.objects.filter(user=request.user)
     return render(request, 'comments/index.html', {'comments': comments})
 
 @login_required
@@ -153,6 +153,7 @@ class CommentsUpdate(LoginRequiredMixin,UpdateView):
     def form_valid(self, form):
         book_id = self.kwargs['book_id']
         form.instance.Book = get_object_or_404(Book, id=book_id)
+        form.instance.user = self.request.user 
         return super().form_valid(form)
     
     def get_success_url(self):

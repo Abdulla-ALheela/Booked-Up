@@ -1,0 +1,18 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block head %}
+{% endblock %} 
+{% block content %}
+
+<div>
+  <h1>Add a Comment</h1>
+</div>
+
+<form action="" method="post">
+  {% csrf_token %}
+  <table>
+    {{ form.as_table }}
+  </table>
+  <button type="submit" class="btn btn-secondary">Submit!</button>
+</form>
+{% endblock %}

@@ -26,7 +26,7 @@
            <p class="card-text">{{book.due_date}}</p>
            <br/>
            <br/> 
-           <a href="{% url 'Return' book.book.id %}" >Return</a>
+           <a  class="btn btn-danger" href="{% url 'Return' book.book.id %}" >Return</a>
          </div>
         </div>
       </a>
