@@ -104,7 +104,7 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'Booked_Up',
+            'NAME': 'catcollector',
        
         }
     }
