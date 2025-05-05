@@ -144,6 +144,7 @@ def comment_detail(request, comment_id):
 class CommentsCreate(LoginRequiredMixin,CreateView):
     model = Comments
     fields = ['comment']
+    template_name = 'books/detail.html'
 
     def form_valid(self, form):
         book_id = self.kwargs['book_id']
@@ -155,23 +156,35 @@ class CommentsCreate(LoginRequiredMixin,CreateView):
         return reverse('book-detail', kwargs={
             'book_id': self.kwargs['book_id'],
          })
+    
 
-class CommentsUpdate(LoginRequiredMixin,UpdateView):
+class CommentsUpdate(LoginRequiredMixin, UpdateView):
     model = Comments
     fields = ['comment']
+    template_name = 'books/detail_edit.html'  
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        book_id = self.kwargs['book_id']
+        context['book'] = get_object_or_404(Book, id=book_id)
+        context['comment'] = self.get_object()  
+        context['comments'] = Comments.objects.filter(book_id=book_id)
+        context['comments_form'] = CommentsForm(instance=self.get_object())   
+        return context
+
+   
     def form_valid(self, form):
         book_id = self.kwargs['book_id']
         form.instance.book = get_object_or_404(Book, id=book_id)
-        form.instance.user = self.request.user 
+        form.instance.user = self.request.user
         return super().form_valid(form)
-    
-    def get_success_url(self):
-        return reverse('book-detail', kwargs={
-            'book_id': self.kwargs['book_id'],
-         })
-    
 
+
+    def get_success_url(self):
+        return reverse('book-detail', kwargs={'book_id': self.kwargs['book_id']})
+    
+    
+    
 class CommentsDelete(LoginRequiredMixin,DeleteView):
     model = Comments
 

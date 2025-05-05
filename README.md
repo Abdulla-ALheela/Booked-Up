@@ -9,6 +9,11 @@
 
 ## Getting Started
 
+### Deployed App
+
+[Deployed App Link](https://book-up-cad29b3268a5.herokuapp.com/)
+
+
 ### Planning Materials
 
 [View Planning Documents](https://trello.com/b/ZNcE9joM/bookedup)

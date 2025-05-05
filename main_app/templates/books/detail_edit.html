@@ -33,7 +33,7 @@
       <br/>
       <h1>Add a Comment</h1>
     </div>
-    <form action="{% url 'comment-create' book.id %}" method="post">
+    <form action="{% url 'comment-update' book.id comment.id %}" method="post">
       {% csrf_token %}
     
       {{ comments_form|crispy }}
