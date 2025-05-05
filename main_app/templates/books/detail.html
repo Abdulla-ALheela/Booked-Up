@@ -46,6 +46,9 @@
             <h5 class="card-title">Comment: {{ comment.comment }}</h5>
             <p class="card-text">date created: {{ comment.date }}</p>
             <p class="card-text">Username: {{ comment.user.username }}</p>
+            {% if comment.user == user %}
+            <a href="{% url 'comment-detail' comment.id %}"  class="btn btn-info">Open</a>
+            {% endif %}
           </div>
         </div>
         {% if comment.user == user %}
