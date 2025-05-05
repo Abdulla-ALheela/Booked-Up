@@ -14,7 +14,6 @@ urlpatterns = [
    path('books/<int:book_id>/', views.book_detail, name='book-detail'),
    path('accounts/', include('django.contrib.auth.urls')),
    path('accounts/signup/', views.signup, name='signup'),
-   path('accounts/signup/', views.signup, name='signup'),
    path('comments/', views.comments_index, name='comment-index'),
    path('comments/<int:comment_id>/', views.comment_detail, name='comment-detail'),
    path('books/<int:book_id>/comments/create/', views.CommentsCreate.as_view(), name='comment-create'),

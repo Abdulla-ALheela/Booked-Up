@@ -18,25 +18,25 @@
             </div>
         </div>
     </div>
-    {% for objct in books %}
 
+    {% for objct in books %}
     <div class="row d-flex justify-content-center border-top">
         <div class="col-5">
             <br />
             <div class="row d-flex">
                 <div class="book">
-                    <img src={{objct.book.image}} class="{{objct.book.title}} image">
+                    <img src="{{ objct.book.image }}" class="{{ objct.book.title }} image">
                 </div>
                 <div class="my-auto flex-column d-flex pad-left">
-                    <h6 class="mob-text">{{objct.book.title}}</h6>
-                    <p class="mob-text">{{objct.book.aouth}}</p>
+                    <h6 class="mob-text">{{ objct.book.title }}</h6>
+                    <p class="mob-text">{{ objct.book.aouth }}</p>
                 </div>
             </div>
         </div>
         <div class="my-auto col-7">
             <div class="row text-right">
                 <div class="col-4">
-                    <h6 class="mob-text">{{objct.book.created_at}}</h6>
+                    <h6 class="mob-text">{{ objct.book.created_at }}</h6>
                 </div>
                 <div class="col-4">
                     <a href="{% url 'remove_from_cart' objct.book.id %}" class="btn btn-danger">Remove from Cart</a>
@@ -47,7 +47,7 @@
     {% endfor %}
 
     {% if books %}
-    <a href="{% url 'checkout' %}" class="btn btn-primary">Checkout</a>
+    <a href="{% url 'checkout' %}" class="btn btn-primary mt-2">Checkout</a>
     {% endif %}
 
 </div>

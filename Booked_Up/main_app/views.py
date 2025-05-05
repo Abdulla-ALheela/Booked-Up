@@ -11,10 +11,8 @@ from django.shortcuts import get_object_or_404
 from datetime import timedelta
 from django.utils import timezone
 from django.urls import reverse
-from django import forms
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column
 from .forms import CommentsForm
+from django.contrib import messages
 
 def home(request):
     if request.user.is_authenticated:
@@ -57,7 +55,7 @@ def add_to_cart(request, book_id):
     book = get_object_or_404(Book, id=book_id)
 
     BorrowCart.objects.get_or_create(book=book, user=request.user, is_active=True)
-
+    
     return redirect('book-index')
 
 @login_required
@@ -68,13 +66,17 @@ def remove_from_cart(request, book_id):
 
     return redirect('cart-index')
 
+
 @login_required
 def checkout(request):
     cart_items = BorrowCart.objects.filter(user=request.user, is_active=True)
+    unavailable_books = []
 
     for item in cart_items:
-        if not BorrowList.objects.filter(user=request.user, book=item.book).exists():
-            BorrowList.objects.get_or_create(
+      
+        if item.book.is_available:
+    
+            BorrowList.objects.create(
                 user=request.user,
                 book=item.book,
                 borrow_at=timezone.now().date(),
@@ -82,14 +84,23 @@ def checkout(request):
                 is_borrowed=True
             )
 
-            
+   
             item.book.is_available = False
             item.book.save()
 
-    
-    cart_items.delete()
+      
+            item.delete()
+        else:
+  
+            unavailable_books.append(item.book.title)
+            item.delete()
 
-    return redirect('book-index')
+ 
+    if unavailable_books:
+        msg = "The following book(s) were not available and removed from your cart: " + ", ".join(unavailable_books)
+        messages.warning(request, msg)
+
+    return redirect('home')
 
 
 @login_required

@@ -13,6 +13,7 @@
 <form action="" method="post" class="form-container" autocomplete="off">
   {% csrf_token %}
   {{ form|crispy }}
-  <button type="submit" class="btn submit">Submit!</button>
+  <br/>
+  <button type="submit" class="btn btn-dark">Submit!</button>
 </form>
 {% endblock %}

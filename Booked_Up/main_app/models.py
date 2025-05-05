@@ -22,7 +22,7 @@ class BorrowCart(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateField(auto_now_add=True)
-    is_active = models.BooleanField()
+    is_active = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user} cart"
