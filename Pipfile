@@ -5,8 +5,21 @@ name = "pypi"
 
 [packages]
 django-crispy-forms = "*"
+django = "*"
+psycopg2-binary = "*"
+whitenoise = "*"
+gunicorn = "*"
+dj-database-url = "*"
+python-dotenv = "*"
+bootstrap4 = "*"
+django-bootstrap5 = "*"
+crispy-bootstrap5 = "*"
+crispy-bootstrap4 = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.11"
+
+[pipenv]
+allow_prereleases = true
