@@ -183,6 +183,7 @@ class CommentUpdate(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         book_id = self.kwargs['book_id']
         context['book'] = get_object_or_404(Book, id=book_id)
+        context['borrow'] = BorrowList.objects.filter(book_id=book_id).first()
         context['comment'] = self.get_object()  
         context['comments'] = Comment.objects.filter(book_id=book_id)
         context['comment_form'] = CommentForm(instance=self.get_object())   
