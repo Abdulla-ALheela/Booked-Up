@@ -13,7 +13,7 @@
       <a href="{% url 'book-detail' book.id %}">
         <div class="card h-100">
           <div class="image-container">
-            <img src="{{ book.image }}" class="card-img-top {% if not book.is_available %} borrowed {% endif %}" alt="book image">
+            <img src="{{ book.image }}" class="card-img-top {% if not book.is_available %} borrowed {% endif %}" alt="Book image">
             {% if not book.is_available %}
               <div class="overlay">
                 <p class="borrowed-text">Borrowed</p>

@@ -34,18 +34,18 @@
 
 <div class="container py-5">
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    {% for book in books %}
+    {% for borrowed_book in borrowed_books %}
     <div class="col">
-      <a href="{% url 'book-detail' book.book.id %}">
+      <a href="{% url 'book-detail' borrowed_book.book.id %}">
         <div class="card h-100">
-          <img src={{book.book.image}} class="card-img-top" alt="book image">
+          <img src={{borrowed_book.book.image}} class="card-img-top" alt="book image">
           <div class="card-body">
-            <h5 class="card-title non-link">{{book.book.title}}</h5>
-            <p class="card-text  non-link">{{book.book.aouth}}</p>
-            <p class="card-text  non-link">Borrowed on: {{book.borrow_at}}</p>
-            <p class="card-text  non-link">Return by: {{book.due_date}}</p>
+            <h5 class="card-title non-link">{{borrowed_book.book.title}}</h5>
+            <p class="card-text  non-link">{{borrowed_book.book.aouth}}</p>
+            <p class="card-text  non-link">Borrowed on: {{borrowed_book.borrow_at}}</p>
+            <p class="card-text  non-link">Return by: {{borrowed_book.due_date}}</p>
             </br>
-            <a class="btn btn-danger btn-color" href="{% url 'Return' book.book.id %}">Return</a>
+            <a class="btn btn-danger btn-color" href="{% url 'return' borrowed_book.book.id %}">Return</a>
           </div>
         </div>
       </a>

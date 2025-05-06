@@ -1,7 +1,7 @@
 a.card-link {
     text-decoration: none;
     color: inherit;
-    display: block;
+    display: flexbox;
   }
   
   a.card-link:hover {

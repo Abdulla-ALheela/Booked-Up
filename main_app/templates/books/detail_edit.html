@@ -16,7 +16,7 @@
         <h2 class="fw-bolder mb-4">{{book.author}}</h2>
         <p class="lead mb-4">{{book.description}}</p>
         {% if book.is_available %}
-        <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'add_to_cart' book.id %}">Borrow</a>
+        <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'add-to-cart' book.id %}">Borrow</a>
         {% elif borrow.user == user %}
         <div class="alert alert-success" role="alert">
           You have already borrowed this book.
@@ -30,19 +30,19 @@
       </div>
     </div>
     <div>
-      <br/>
+      <br />
       <h1>Add a Comment</h1>
     </div>
     <form action="{% url 'comment-update' book.id comment.id %}" method="post">
       {% csrf_token %}
-    
-      {{ comments_form|crispy }}
-      <br/>
+
+      {{ comment_form|crispy }}
+      <br />
       <button type="submit" class="btn btn-dark">Submit!</button>
     </form>
   </div>
 </section>
-<br/>
+<br />
 <h1 class="text-center mb-5">Comment Section</h1>
 <div class="container py-5">
   {% if comments %}
@@ -58,7 +58,7 @@
             <p class="card-text">date created: {{ comment.date }}</p>
             <p class="card-text">Username: {{ comment.user.username }}</p>
             {% if comment.user == user %}
-            <a href="{% url 'comment-detail' comment.id %}"  class="btn btn-dark">Open</a>
+            <a href="{% url 'comment-detail' comment.id %}" class="btn btn-dark">Open</a>
             {% endif %}
           </div>
         </div>
